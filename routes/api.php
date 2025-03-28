@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
-Route::group([],function(){
-    Route::get('posts',[PostController::class,'getAllPosts']);
+Route::group([
+    'prefix'=>'posts'
+],function(){
+    Route::get('',[PostController::class,'getAllPosts']);
+    Route::post('create',[PostController::class,'createPost']);
+    Route::get('{id}',[PostController::class,'getPost']);
 });
