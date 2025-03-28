@@ -46,4 +46,23 @@ class PostController extends Controller
         }
     }
 
+    public function updatePost(Request $request,$id){
+        $validated=$request->validate([
+            "title"=>"string|required",
+            "body"=>"required|string"
+        ]);
+
+        $post=Post::find($id);
+
+        if($post){
+            $post->title=$request->title;
+            $post->body=$request->body;
+            $post->save();
+            return response()->json(["message"=>"Post updated","post"=>$post],200);
+        }else{
+
+            return response()->json(["message"=>"Post not found"],404);
+        }
+    }
+
 }
