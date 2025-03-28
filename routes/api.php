@@ -14,4 +14,5 @@ Route::group([
     Route::get('',[PostController::class,'getAllPosts']);
     Route::post('create',[PostController::class,'createPost']);
     Route::get('{id}',[PostController::class,'getPost']);
+    Route::delete('{id}',[PostController::class,'deletePost']);
 });

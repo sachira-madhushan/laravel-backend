@@ -25,4 +25,25 @@ class PostController extends Controller
     }
 
 
+    public function getPost($id){
+        $post =Post::find($id);
+
+        if($post){
+            return response()->json(["post"=>$post],200);
+        }else{
+            return response()->json(["message"=>"Post not found"],404);
+        }
+    }
+
+    public function deletePost($id){
+        $post =Post::find($id);
+
+        if($post){
+            $post->delete();
+            return response()->json(["message"=>"Post deleted"],200);
+        }else{
+            return response()->json(["message"=>"Post not found"],404);
+        }
+    }
+
 }
