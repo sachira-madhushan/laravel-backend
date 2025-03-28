@@ -20,7 +20,7 @@ Route::group([
 });
 
 Route::group([
-    'prefix'=>'users'
+    'prefix'=>'users',
 ],function(){
     Route::post('register',[AuthController::class,'register']);
     Route::post('login',[AuthController::class,'login']);

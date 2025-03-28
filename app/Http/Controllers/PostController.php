@@ -6,9 +6,18 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Gate;
 
-class PostController extends Controller
+class PostController extends Controller implements HasMiddleware
 {
+    public static function middleware()
+    {
+        return [
+            new Middleware('auth:sanctum',except:['getAllPosts','getPost'])
+        ];
+    }
     public function getAllPosts(){
         $posts=Post::all();
         return response()->json(['posts'=>$posts],200);
@@ -20,7 +29,7 @@ class PostController extends Controller
             "body"=>"required|string"
         ]);
 
-        $post=Post::create($validated);
+        $post=$request->user()->posts()->create($validated);
         return response()->json(["message"=>"Post created","post"=>$post],201);
     }
 
@@ -36,9 +45,11 @@ class PostController extends Controller
     }
 
     public function deletePost($id){
+
         $post =Post::find($id);
 
         if($post){
+            Gate::authorize('modify',$post);
             $post->delete();
             return response()->json(["message"=>"Post deleted"],200);
         }else{
@@ -47,6 +58,8 @@ class PostController extends Controller
     }
 
     public function updatePost(Request $request,$id){
+
+
         $validated=$request->validate([
             "title"=>"string|required",
             "body"=>"required|string"
@@ -55,6 +68,7 @@ class PostController extends Controller
         $post=Post::find($id);
 
         if($post){
+            Gate::authorize('modify',$post);
             $post->title=$request->title;
             $post->body=$request->body;
             $post->save();
