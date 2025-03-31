@@ -23,6 +23,7 @@ class PostController extends Controller implements HasMiddleware
         return response()->json(['posts'=>$posts],200);
     }
 
+
     public function createPost(Request $request){
         $validated=$request->validate([
             "title"=>"string|required",
@@ -42,6 +43,11 @@ class PostController extends Controller implements HasMiddleware
         }else{
             return response()->json(["message"=>"Post not found"],404);
         }
+    }
+
+    public function getUserPosts(Request $request){
+        $posts = $request->user()->posts;
+        return response()->json(["posts"=>$posts],200);
     }
 
     public function deletePost($id){

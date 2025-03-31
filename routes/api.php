@@ -13,6 +13,7 @@ Route::group([
     'prefix'=>'posts'
 ],function(){
     Route::get('',[PostController::class,'getAllPosts']);
+    Route::get('/user',[PostController::class,'getUserPosts']);
     Route::post('create',[PostController::class,'createPost']);
     Route::get('{id}',[PostController::class,'getPost']);
     Route::delete('{id}',[PostController::class,'deletePost']);
